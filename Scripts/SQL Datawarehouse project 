@@ -1,0 +1,8 @@
+-- Create Database 'Datawarehouse'
+
+use master;
+
+create database DataWarehouse;
+
+Use DataWarehouse;
+
