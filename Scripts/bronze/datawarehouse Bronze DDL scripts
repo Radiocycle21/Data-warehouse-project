@@ -1,3 +1,21 @@
+/*
+===============================================================================================
+
+DDL Script: create Bronze tables
+
+===============================================================================================
+
+Script Purpose: 
+
+    This script creates tables in he 'bronze' schema, dropping existing tabels if they already exists.
+    Run this script to re-define the DDL struture of 'bronze' table
+
+===============================================================================================
+*/
+
+
+
+
 -- create SQL DDL scripts for all CSV files in the CRM and ERP systems 
 
 If object_ID ('bronze.crm_cust_info', 'U') is NOT NULL
