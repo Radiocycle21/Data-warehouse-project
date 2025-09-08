@@ -1,0 +1,194 @@
+
+/*
+===============================================================================================
+
+DDL Script: create Bronze tables
+
+===============================================================================================
+
+Script Purpose: 
+
+    This script creates tables in he 'bronze' schema, dropping existing tabels if they already exists.
+    Run this script to re-define the DDL struture of 'bronze' table
+
+===============================================================================================
+*/
+
+
+
+-- create SQL DDL scripts for all CSV files in the CRM and ERP systems 
+
+If object_ID ('bronze.crm_cust_info', 'U') is NOT NULL
+    drop table bronze.crm_cust_info;
+
+create table bronze.crm_cust_info (
+    cst_id int,
+    cst_key nvarchar(50),
+    cst_firstname nvarchar(50),
+    cst_lastname nvarchar(50),
+    cst_marital_status nvarchar (50),
+    cst_gndr nvarchar(50),
+    cst_create_date date 
+);
+
+
+If object_ID ('bronze.crm_prd_info', 'U') is NOT NULL
+    drop table bronze.crm_prd_info;
+
+create table bronze.crm_prd_info (
+    prd_id int,
+    prd_key nvarchar(50),
+    prd_nm nvarchar(50),
+    prd_cost INT,
+    prd_line nvarchar(50),
+    prd_start_dt datetime,
+    prd_end_dt datetime
+);
+
+If object_ID ('bronze.crm_sales_details', 'U') is NOT NULL
+    drop table bronze.crm_sales_details;
+
+create table bronze.crm_sales_details (
+   sls_ord_num  NVARCHAR(50),
+    sls_prd_key  NVARCHAR(50),
+    sls_cust_id  INT,
+    sls_order_dt INT,
+    sls_ship_dt  INT,
+    sls_due_dt   INT,
+    sls_sales    INT,
+    sls_quantity INT,
+    sls_price    INT
+);
+
+If object_ID ('bronze.erp_cust_AZ12', 'U') is NOT NULL
+    drop table bronze.erp_cust_AZ12;
+
+create table bronze.erp_cust_AZ12 (
+    CID nvarchar (50),
+    B_Date date,
+    GEN nvarchar(50)
+);
+
+If object_ID ('bronze.erp_loc_a101', 'U') is NOT NULL
+    drop table bronze.erp_loc_a101;
+
+create table bronze.erp_loc_a101 (
+    cid nvarchar(50),
+    cntry nvarchar(50)
+);
+
+If object_ID ('bronze.erp_PX_CAT_G1V2', 'U') is NOT NULL
+    drop table bronze.erp_PX_CAT_G1V2;
+
+create table bronze.erp_PX_CAT_G1V2 (
+    ID nvarchar (50),
+    CAT Nvarchar (50),
+    Subcat nvarchar (50),
+    maintenace nvarchar(50)
+);
+
+
+-- write SQL Bulk instert to load all CSV files into your bronze tabels
+
+-- bronze.crm_cust_info
+
+
+truncate table bronze.crm_cust_info;
+
+BULK INSERT Bronze.crm_cust_info
+FROM '/var/opt/mssql/import/cust_info.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+
+select * from bronze.crm_cust_info;
+
+select count(*) from bronze.crm_cust_info;
+
+
+-- bronze.crm_prd_info
+
+truncate table bronze.crm_prd_info;
+
+BULK INSERT bronze.crm_prd_info
+FROM '/var/opt/mssql/import/prd_info.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+
+select * from bronze.crm_prd_info;
+
+select count(*) from bronze.crm_prd_info;
+
+
+-- bronze.crm_sales_details
+
+truncate table bronze.crm_sales_details;
+
+BULK INSERT bronze.crm_sales_details
+FROM '/var/opt/mssql/import/sales_details.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+
+select * from bronze.crm_sales_details;
+
+select count(*) from bronze.crm_sales_details;
+
+
+-- bronze.erp_cust_AZ12
+
+truncate table bronze.erp_cust_AZ12;
+
+BULK INSERT bronze.erp_cust_AZ12
+FROM '/var/opt/mssql/import/cust_AZ12.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+
+select * from bronze.erp_cust_AZ12;
+
+select count(*) from bronze.erp_cust_AZ12;
+
+
+-- Bronze.erp_loc_a101
+
+truncate table Bronze.erp_loc_a101;
+
+BULK INSERT Bronze.erp_loc_a101
+FROM '/var/opt/mssql/import/loc_a101.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+
+select * from Bronze.erp_loc_a101;
+
+select count(*) from Bronze.erp_loc_a101;
+
+
+-- bronze.erp_PX_CAT_G1V2 
+
+truncate table bronze.erp_PX_CAT_G1V2;
+
+BULK INSERT bronze.erp_PX_CAT_G1V2
+FROM '/var/opt/mssql/import/PX_CAT_G1V2.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+
+select * from bronze.erp_PX_CAT_G1V2 ;
+
+select count(*) from bronze.erp_PX_CAT_G1V2 ;
+
